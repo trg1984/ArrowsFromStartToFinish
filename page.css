@@ -1,0 +1,58 @@
+html, body {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+}
+
+#clearButton {
+	position: absolute;
+	top: 8;
+	right: 8;
+	z-index: 10;
+}
+
+#smoothSlider {
+	position: absolute;
+	top: 14px;
+	right: 65px;
+	z-index: 10;
+	width: 184px;
+}
+
+label[labelof="smoothSlider"] {
+	position: absolute;
+	top: 14px;
+	right: 265px;
+	z-index: 10;
+}
+
+label[labelof="smoothSlider"]:before {
+	content: "Smooth radius: ";
+}
+
+
+.content {
+	
+	width: 100%;
+	height: 100%;
+	display: inline-block;
+	position: relative;
+}
+
+.arrow {
+	display: inline-block;
+	position: absolute;
+	stroke-width: 4;
+	stroke: black;
+	pointer-events: none;
+}
+
+.arrow marker {
+	stroke-width: 1;
+}
+
+.arrow path.line {
+	stroke-dasharray: 5;
+}

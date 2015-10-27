@@ -1,0 +1,79 @@
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Arrow from Start to Finish</title>
+        <link rel="stylesheet" href="page.css" />
+        <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+		<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+        <script src="Arrow.js"></script>
+        <script>
+			var arrow;
+			var dx = 0, dy = 0, mx = 0, my = 0, ux = 0, uy = 0;
+			var prevX = 0, prevY = 0;
+			var mDown = false;
+			var arrowList = [];
+        
+			var mDownHandler = function(ev) {
+				
+				mDown = true;
+				arrow = new Arrow($('#placeholder'), {smoothRadius: $('#smoothSlider').val() | 0});
+				dx = ev.clientX - arrow.config.offsetX;
+				dy = ev.clientY - arrow.config.offsetY;
+				arrow.addPoint(dx, dy);
+				//console.log(ev);
+			}
+        
+			var mUpHandler = function(ev) {
+				
+				mDown = false;
+				ux = ev.clientX - arrow.config.offsetX;
+				uy = ev.clientY - arrow.config.offsetX;
+				arrow.addPoint(ux, uy);
+				arrowList.push(arrow);
+			}
+        
+			var mMoveHandler = function(ev) {
+				if (mDown) {
+					arrow.addPoint(ev.clientX - arrow.config.offsetX, ev.clientY - arrow.config.offsetY);
+				}
+			}
+			
+			var clear = function(ev) {
+				arrowList = [];
+				delete arrow;
+				$('#placeholder').empty();
+			}
+			
+			var redrawArrows = function(ev) {
+				delete arrow;
+				var smoothRadius = $('#smoothSlider').val() | 0;
+				//console.log('Smooth radius:', smoothRadius, arrowList.length);
+				//$('#placeholder').empty();
+				for (var item in arrowList) {
+					arrowList[item].config.smoothRadius = smoothRadius;
+					arrowList[item].draw();
+				}
+				$('label[labelof="smoothSlider"]').text(smoothRadius);
+			}
+			
+			$(document).ready(
+				function(e) {
+					// TODO arrow init code here
+					
+					$('#placeholder').on('mousedown', mDownHandler)
+						.on('mouseup', mUpHandler)
+						.on('mousemove', mMoveHandler);
+					$('#clearButton').click(clear);
+					$('#smoothSlider').change(redrawArrows);
+					redrawArrows();
+				}
+			);
+        </script>
+    </head>
+    <body>
+    <input type="button" value="Clear" id="clearButton" />
+    <input type="range" id="smoothSlider" min="1" max="200" value="5" />
+    <label labelof="smoothSlider"></label>
+	<div id="placeholder" class="content"></div>
+    </body>
+</html>
